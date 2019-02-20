@@ -1,0 +1,30 @@
+diff --git a/setup.py b/setup.py
+index ccaf411..798961c 100755
+--- a/setup.py
++++ b/setup.py
+@@ -51,7 +51,7 @@ else:
+ 
+ 
+ # Locate the re2 module
+-_re2_prefixes = ['/usr', '/usr/local', '/opt/', '/opt/local', os.environ['HOME'] + '/.local']
++_re2_prefixes = ['re2', '/usr', '/usr/local', '/opt/', '/opt/local', os.environ['HOME'] + '/.local']
+ 
+ re2_prefix = ''
+ for a in _re2_prefixes:
+@@ -90,7 +90,6 @@ def main():
+             include_dirs=include_dirs,
+             libraries=libraries,
+             library_dirs=library_dirs,
+-            runtime_library_dirs=runtime_library_dirs,
+             extra_compile_args=['-DPY2=%d' % PY2] + extra_compile_args,
+             extra_link_args=['-g'] if DEBUG else ['-DNDEBUG'],
+         )]
+@@ -105,7 +105,7 @@ def main():
+                 'warn.unreachable': True,
+             })
+     setup(
+-        name='re2',
++        name='re2_wheels',
+         version='0.2.23',
+         description='Python wrapper for Google\'s RE2 using Cython',
+         long_description=get_long_description(),

@@ -1,0 +1,6 @@
+[submodule "pyre2"]
+	path = pyre2
+	url = https://github.com/DeanF/pyre2.git
+[submodule "re2"]
+	path = re2
+	url = https://github.com/google/re2.git

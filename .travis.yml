@@ -1,0 +1,43 @@
+language: python
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      sudo: required
+      python: 3.7.2
+      services:
+      - docker
+      env:
+      - CIBW_BEFORE_BUILD="rm -rf build/"
+      - CIBW_BUILD=*-manylinux1_x86_64
+      - BUILD_SCRIPT=manylinux1/build_re2.sh
+      - RE2_ARCH=x86_64
+      - PATCH_DIR=manylinux1
+    - os: linux
+      dist: xenial
+      sudo: required
+      python: 3.7.2
+      services:
+      - docker
+      env:
+      - CIBW_BEFORE_BUILD="rm -rf build/"
+      - CIBW_BUILD=*-manylinux1_i686
+      - BUILD_SCRIPT=manylinux1/build_re2.sh
+      - RE2_ARCH=i686
+      - PATCH_DIR=manylinux1
+    - os: osx
+      env:
+      - BUILD_SCRIPT=osx/build_re2.sh
+      - PATCH_DIR=osx
+      language: generic
+
+install:
+  - pip3 install -U setuptools twine wheel cython git+https://github.com/YannickJadoul/cibuildwheel.git@pip-19-stalling-workaround
+
+script:
+  - ./$BUILD_SCRIPT
+  - cd pyre2
+  - patch -p1 < ../$PATCH_DIR/setup.py.patch
+  - python3 setup.py build || true  # cythonize, ensure build works
+  - cibuildwheel --output-dir /tmp/wheelhouse

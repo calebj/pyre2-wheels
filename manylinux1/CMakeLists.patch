@@ -1,0 +1,41 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f87c4ff..cdc6afa 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -3,7 +3,7 @@
+ # license that can be found in the LICENSE file.
+ 
+ # Old enough to support Ubuntu Trusty.
+-cmake_minimum_required(VERSION 2.8.12)
++cmake_minimum_required(VERSION 2.8.11)
+ 
+ if(POLICY CMP0048)
+   cmake_policy(SET CMP0048 NEW)
+@@ -32,22 +32,22 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+   endif()
+   # CMake defaults to /W3, but some users like /W4 (or /Wall) and /WX,
+   # so we disable various warnings that aren't particularly helpful.
+-  add_compile_options(/wd4100 /wd4201 /wd4456 /wd4457 /wd4702 /wd4815)
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4100 /wd4201 /wd4456 /wd4457 /wd4702 /wd4815")
+   # Without a byte order mark (BOM), Visual Studio assumes that the source
+   # file is encoded using the current user code page, so we specify UTF-8.
+-  add_compile_options(/utf-8)
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
+ elseif(CYGWIN OR MINGW)
+   # See https://stackoverflow.com/questions/38139631 for details.
+-  add_compile_options(-std=gnu++11)
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+ elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+-  add_compile_options(-std=c++11)
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+ endif()
+ 
+ if(WIN32)
+   add_definitions(-DUNICODE -D_UNICODE -DSTRICT -DNOMINMAX)
+   add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS)
+ elseif(UNIX)
+-  add_compile_options(-pthread)
++  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+   list(APPEND EXTRA_TARGET_LINK_LIBRARIES -pthread)
+ endif()
+ 
